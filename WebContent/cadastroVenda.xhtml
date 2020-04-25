@@ -1,0 +1,51 @@
+<ui:composition template="layoutPadrao.xhtml" 
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:define name="titulo">Cadastro venda</ui:define>
+
+<ui:define name="corpo">
+	<h:form>
+		<p:growl />
+		<p:panel header="Cadastro venda">
+			<p:panelGrid columns="2">
+				<h:outputText value="Produto: *" />
+				<p:selectOneMenu value="#{vendaController.produtoSelecionado}"
+					converter="produtoConverter" required="true"
+					requiredMessage="O campo produto é obrigatório!"
+					filter="true">
+					<f:selectItem itemLabel="SELECIONE" />
+					<f:selectItems 
+						value="#{produtoController.lista}" 
+						var="produto"
+						itemLabel="#{produto.nome}"
+						itemValue="#{produto}" />
+				</p:selectOneMenu>
+				<h:outputText value="Quantidade: *" />
+				<p:inputText value="#{vendaController.venda.quantidade}">
+					<f:validateLongRange minimum="1" />
+				</p:inputText>
+				<h:outputText value="Data da venda: *" />
+				<p:calendar pattern="dd/MM/yyyy" value="#{vendaController.venda.dataVenda}"
+					required="true"
+					requiredMessage="O campo data é obrigatório!">
+			    	<f:convertDateTime pattern="dd/MM/yyyy"
+			    	 timeZone="America/Sao_Paulo" />
+			    </p:calendar>
+			    <f:facet name="footer">
+				    <p:commandButton value="Salvar" action="#{vendaController.salvar}"
+				    	ajax="false" />
+				    <p:commandButton value="Limpar" action="cadastroVenda.xhtml"
+				    	actionListener="#{vendaController.limparCampos}"
+				    	immediate="true"
+				    	ajax="false" />
+			    </f:facet>
+			</p:panelGrid>
+		</p:panel>
+	</h:form>
+</ui:define>
+
+</ui:composition>
